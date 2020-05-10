@@ -1,0 +1,8 @@
+.message {
+    line-height: 1.75;
+    padding: 15px 25px;
+    margin-bottom: 20px;
+    cursor: default;
+    border-right: 5px solid #f2a365;
+    text-align: right;
+}
