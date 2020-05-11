@@ -1,0 +1,45 @@
+.inputArea {    
+    width: 100%;       
+    height: 4%;
+    bottom: 20px;    
+    display: flex;  
+    justify-content: space-between;
+    position: absolute;         
+}
+
+.newChat {    
+    margin-left: 40px;
+    width: 75%;
+    color: #ececec;
+    font-size: 16px;
+    border: 0;
+    border-bottom: 2px solid #14ffec;
+    padding: 5px 0;
+    caret-color: #14ffec;
+}
+
+::placeholder {
+    color: #ececec;
+    opacity: 1; /* Firefox */
+}
+  
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color: #ececec;
+}
+  
+::-ms-input-placeholder { /* Microsoft Edge */
+   color: #ececec;
+}
+
+.material-icons {
+    margin-left: 20px;
+    width: 20%;      
+    color: #14ffec;
+    cursor: pointer;
+    
+}
+
+.material-icons.blue {            
+    color: #14ffec;    
+}
+

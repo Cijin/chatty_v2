@@ -3,10 +3,10 @@ import './message.css';
 
 export default class Message extends React.Component {
     render() {
-        return (
+        return (            
             <div className="message">
-                <p>Hey there! How is theweather over there?</p>
-            </div>
+                <p>Hey there! How is the weather over there?</p>                                      
+            </div>            
         );
     }
 }

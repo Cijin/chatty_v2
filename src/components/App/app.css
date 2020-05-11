@@ -1,6 +1,6 @@
 .app {
-    width: 95vw;
-    height: 98vh;
+    overflow: hidden;
+    height: 100vh;
     display: flex;    
     flex-direction: horizontal;
 }

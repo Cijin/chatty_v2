@@ -1,9 +1,11 @@
 .messages {
-    width: 65%;
-}   
+    width: 100%;
+    position: relative;    
+}
 
 h4 {
-    padding: 40px 10px;
-    margin-left: 10px;
+    width: 100%;
+    padding: 40px 10px;    
     margin-right: 10px;
+    background-color: #0d7377;
 }
