@@ -1,12 +1,18 @@
 import * as React from 'react';
 import './message.css';
 
-export default class Message extends React.Component {
+type MessageProps = {
+    id: string,
+    message: string,
+};
+
+type MessageState = {};
+
+export default class Message extends React.Component<MessageProps, MessageState> {    
     render() {
         return (            
-            <div className="message">
-                <p>Hey there! How is the weather over there?</p>
-                <p>It's been so long... :O</p>
+            <div id={this.props.id} className="message">
+                <p>{this.props.message}</p>
             </div>            
         );
     }

@@ -4,13 +4,42 @@ import InputArea from './InputArea/InputArea';
 
 import './messages.css';
 
-export default class Messages extends React.Component {
+type MessagesProp = {};
+
+type MessagesState = {
+    messages: string[],
+}
+
+export default class Messages extends React.Component<MessagesProp, MessagesState> {
+    constructor (props: MessagesProp) {
+        super(props);
+
+        this.state = {
+            messages: [],
+        }
+
+        this.incomingText = this.incomingText.bind(this);
+    }    
+
+    incomingText(newMessage: string) { 
+        let updatedMessages: string[] = this.state.messages;
+        updatedMessages.push(newMessage);
+        this.setState({
+            messages: updatedMessages,
+        });
+    }
+
     render() {
         return (
             <div className="messages">
                 <h4>Contact Icon | Contact Name | Contact Description</h4>
-                <Message />
-                <InputArea />
+                {                
+                    this.state.messages.map((message, index) => {                        
+                        return <Message id={String(index)} 
+                            message={message} />
+                    })
+                }                
+                <InputArea onSend={this.incomingText} />
             </div>
         )
     }
