@@ -35,8 +35,8 @@ export default class Messages extends React.Component<MessagesProp, MessagesStat
                 <h4>Contact Icon | Contact Name | Contact Description</h4>
                 {                
                     this.state.messages.map((message, index) => {                        
-                        return <Message id={String(index)} 
-                            message={message} />
+                        return <Message key={String(index)}
+                        message={message} />
                     })
                 }                
                 <InputArea onSend={this.incomingText} />

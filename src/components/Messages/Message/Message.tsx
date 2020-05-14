@@ -2,7 +2,7 @@ import * as React from 'react';
 import './message.css';
 
 type MessageProps = {
-    id: string,
+    key: string,
     message: string,
 };
 
@@ -11,7 +11,7 @@ type MessageState = {};
 export default class Message extends React.Component<MessageProps, MessageState> {    
     render() {
         return (            
-            <div id={this.props.id} className="message">
+            <div className="message">
                 <p>{this.props.message}</p>
             </div>            
         );

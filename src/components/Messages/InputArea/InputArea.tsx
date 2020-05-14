@@ -25,7 +25,7 @@ export default class InputArea extends React.Component<InputProps, InputState> {
         this.props.onSend(this.state.newMessage);
     }
 
-    handleChange (e: React.ChangeEvent<HTMLInputElement>) {
+    handleChange (e: React.ChangeEvent<HTMLTextAreaElement>) {
         let newMessage: string = e.target.value;
         this.setState({
             newMessage: newMessage,
@@ -35,8 +35,8 @@ export default class InputArea extends React.Component<InputProps, InputState> {
     render() {
         return (
             <div className="inputArea">
-                <input type="text" placeholder="Get Chatty" 
-                className="newChat" onChange={this.handleChange} />
+                <textarea placeholder="Get Chatty" 
+                className="newChat" onChange={this.handleChange} ></textarea>
                 <i className="material-icons blue" onClick={this.handleClick} >send</i>
             </div>
         );
