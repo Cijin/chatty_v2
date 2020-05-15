@@ -1,12 +1,12 @@
 const express = require('express');
 const chatsRouter = express.Router();
-const messageRouter = require('./messages');
+const chatRouter = require('./chat');
 const createContactTable = require('./migrations/migration');
 const sqlite3 = require('sqlite3');
 const db = new sqlite3.Database(process.env.TEST_DATABASE || './database.sqlite');
 
 
-chatsRouter.use('/:messageID', messageRouter);
+chatsRouter.use('/chat', chatRouter);
 
 //returns all current contact
 //when page loads initially
