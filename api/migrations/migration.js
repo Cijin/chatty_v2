@@ -7,7 +7,7 @@ db.run('CREATE TABLE IF NOT EXISTS `chats`' +
     'PRIMARY KEY(`id`));'
 );
 
-export default function createContactTable (tableName) {
+function createContactTable (tableName) {
     const sql = 'CREATE TABLE IF NOT EXISTS $tableName ' + 
         '(`id` INTEGER NOT NULL, `messages` TEXT NOT NULL, `time` TEXT NOT NULL);';
 
@@ -21,3 +21,5 @@ export default function createContactTable (tableName) {
         }        
     });
 }
+
+module.exports = createContactTable;
