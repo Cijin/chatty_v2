@@ -25,15 +25,15 @@ contactsRouter.get('/', (req, res, next) => {
 });
 
 //create new table on addition of new contact
+//the new table will hold all the chats for that contact
 //new table of name [username][row-id] 
 contactsRouter.post('/', (req, res, next) => {
-    const name = req.contact.name;
-    const email = req.contact.email;
+    const name = req.body.contact.name;
+    const email = req.body.contact.email;
 
     if (!name || !email) {
-        res.sendStatus(400);
+        return res.sendStatus(400);
     }
-    
     const sql = 'INSERT INTO contacts (contact_name, contact_email)' +
         'VALUES ($name, $email);';
     const values = {
@@ -45,29 +45,30 @@ contactsRouter.post('/', (req, res, next) => {
         if (error) {
             next(error);
         }
-        //to create new table name
+
         const rowId = this.lastID;
-        const newId = rowId + name;
-        const newTableSql = 'UPDATE contacts SET contact_table_id = $newId' +
-            'WHERE id = $id;';
+        //to create new table name
+        //regX just replaces spaces between name
+        const tableName = name.replace(/\s+/g, '') + rowId;
+        const newTableSql = 'UPDATE contacts SET contact_table_id=$tableName ' +
+            'WHERE id=$id;';
         const newValues = {
-            $newId: newId,
+            $tableName: tableName,
             $id: rowId,
         };
-        //calling the function in migration to create a table for the new contact
+        //calling the function in migrations to create a table for the new contact
         //the table name is the the contact_table_id
-        createContactTable(newId);
+        createContactTable(tableName, next);        
 
         db.run(newTableSql, newValues, function(error) {
             if (error) {
                 next(error);
             }
-            return db.get('SELECT * FROM contacts WHERE id = $id;', {
-                $id: rowId,
-            }, (error, contact) => {
+            db.get('SELECT * FROM contacts WHERE id=$id;', { $id: rowId }, 
+            (error, contact) => {
                 if (error) {
                     next(error);
-                }
+                }                
                 return res.status(201).json({ contact: contact });
             });
         });

@@ -114,16 +114,39 @@ describe('POST api/contacts', function() {
             .post('/api/contacts/')
             .send({ contact: newContact })
             .then(function() {
-                testDb.all('SELECT * FROM contacts', function(error, contacts) {
+                testDb.all('SELECT * FROM contacts', (error, contacts) => {
                     if (error) {
                         throw new Error(error);
-                    }
-                    const contact = contacts.find(contact => contact.name === newContact.name);
+                    }    
+                    
+                    const contact = contacts.find(contact => contact.contact_name === newContact.name);                                        
                     expect(contact).to.exist;
                     expect(contact.id).to.exist;
-                    expect(contact.email).to.equal(newContact.email);
+                    expect(contact.contact_email).to.equal('newContact@email.com');
                     done();
                 });   
             }).catch(done);
+    });
+
+    it('should send a 201 response for valid request', function() {
+        return request(app)
+            .post('/api/contacts')
+            .send({contact: newContact})
+            .expect(201);
+    });
+
+    it('should send a 400 response for invalid requests', function() {
+        const invalidContact = {
+            name: 'Invalid',
+        }
+        return request(app)
+            .post('/api/contacts/')
+            .send({ contact: invalidContact })
+            .expect(400);
+    });
+
+    it('should create contact table of name with value in column contact_table_id', function(done) {
+        
+        done();
     })
 });
