@@ -146,7 +146,29 @@ describe('POST api/contacts', function() {
     });
 
     it('should create contact table of name with value in column contact_table_id', function(done) {
-        
-        done();
-    })
+        const sql = 'SELECT * FROM contacts';
+        request(app)
+            .post('/api/contacts/')
+            .send({ contact: newContact })
+            .then(function() {        
+                testDb.all(sql, (error, contacts) => {
+                    if (error) {
+                        throw new Error(error);
+                    }
+                    console.log(contacts);
+                    const contact = contacts.find(contact => contact.contact_name === newContact.name);
+                    const contactTableName = contact.contact_table_id;
+
+                    testDb.get(`SELECT name FROM sqlite_master WHERE type = 'table' AND ` +
+                        `name = 'NewContact3';`, (error, table) => {
+                        if (error || !table) {
+                            done(new Error(error || 'contacts table not found'));
+                        }
+                        if (table) {
+                            done();
+                        }
+                    });
+                });        
+            });
+    });
 });
