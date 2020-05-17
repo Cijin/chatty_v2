@@ -1,18 +1,22 @@
 const express = require('express');
-const chatsRouter = express.Router();
+const contactsRouter = express.Router();
 const chatRouter = require('./chat');
-const createContactTable = require('./migrations/migration');
+//As table for each contact is created dynamically 
+//when new contacts are added
+//this method below facilitates that.
+const createContactTable = require('./migrations/createContact');
+
 const sqlite3 = require('sqlite3');
 const db = new sqlite3.Database(process.env.TEST_DATABASE || './database.sqlite');
 
 
-chatsRouter.use('/chat', chatRouter);
+contactsRouter.use('/chat', chatRouter);
 
 //returns all current contact
 //when page loads initially
-chatsRouter.get('/', (req, res, next) => {
-    const sql = 'SELECT * FROM chats';
-    db.run(sql, (error, contacts) => {
+contactsRouter.get('/', (req, res, next) => {
+    const sql = 'SELECT * FROM contacts';
+    db.all(sql, (error, contacts) => {
         if (error) {
             next(error);
         }
@@ -22,7 +26,7 @@ chatsRouter.get('/', (req, res, next) => {
 
 //create new table on addition of new contact
 //new table of name [username][row-id] 
-chatsRouter.post('/', (req, res, next) => {
+contactsRouter.post('/', (req, res, next) => {
     const name = req.contact.name;
     const email = req.contact.email;
 
@@ -30,7 +34,7 @@ chatsRouter.post('/', (req, res, next) => {
         res.sendStatus(400);
     }
     
-    const sql = 'INSERT INTO chats (contact_name, contact_email)' +
+    const sql = 'INSERT INTO contacts (contact_name, contact_email)' +
         'VALUES ($name, $email);';
     const values = {
         $name: name,
@@ -42,12 +46,13 @@ chatsRouter.post('/', (req, res, next) => {
             next(error);
         }
         //to create new table name
-        const newId = this.lastID + name;
-        const newTableSql = 'UPDATE chats SET contact_table_id = $newId' +
+        const rowId = this.lastID;
+        const newId = rowId + name;
+        const newTableSql = 'UPDATE contacts SET contact_table_id = $newId' +
             'WHERE id = $id;';
         const newValues = {
             $newId: newId,
-            $id: this.lastID,
+            $id: rowId,
         };
         //calling the function in migration to create a table for the new contact
         //the table name is the the contact_table_id
@@ -57,16 +62,16 @@ chatsRouter.post('/', (req, res, next) => {
             if (error) {
                 next(error);
             }
-            return db.get('SELECT * FROM chats WHERE id = $id;', {
-                $id: this.lastID,
-            }, (error, chat) => {
+            return db.get('SELECT * FROM contacts WHERE id = $id;', {
+                $id: rowId,
+            }, (error, contact) => {
                 if (error) {
                     next(error);
                 }
-                return res.status(201).json({ chat: chat });
+                return res.status(201).json({ contact: contact });
             });
         });
     });
 });
 
-module.exports = chatsRouter;
+module.exports = contactsRouter;

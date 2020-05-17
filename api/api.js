@@ -1,7 +1,7 @@
 const express = require('express');
 const apiRouter = express.Router();
-const chatsRouter = require('./chats');
+const contactsRouter = require('./contacts');
 
-apiRouter.use('/chats', chatsRouter);
+apiRouter.use('/contacts', contactsRouter);
 
 module.exports = apiRouter;
