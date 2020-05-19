@@ -15,6 +15,20 @@ function seedContactsDatabase(done) {
     });
 }
 
+function seedChatDatabase(done, tableName) {
+    db.serialize(function() {
+        db.run(`DROP TABLE IF EXISTS ${tableName}`);
+        db.run(`CREATE TABLE ${tableName} (` +
+            `id INTEGER NOT NULL, messages TEXT NOT NULL, time TEXT NOT NULL, ` +
+            `PRIMARY KEY(id))`);            
+        db.run(`INSERT INTO ${tableName} (messages, time) ` + 
+            `VALUES ('Hey', '12:30')`);
+        db.run(`INSERT INTO ${tableName} (messages, time) ` + 
+            `VALUES ('What is up?', '12:32')`, done);
+    });
+}
+
 module.exports = {
     seedContactsDatabase: seedContactsDatabase,
+    seedChatDatabase: seedChatDatabase,
 };

@@ -154,8 +154,7 @@ describe('POST api/contacts', function() {
                 testDb.all(sql, (error, contacts) => {
                     if (error) {
                         throw new Error(error);
-                    }
-                    console.log(contacts);
+                    }                    
                     const contact = contacts.find(contact => contact.contact_name === newContact.name);
                     const contactTableName = contact.contact_table_id;
 
@@ -170,5 +169,51 @@ describe('POST api/contacts', function() {
                     });
                 });        
             });
+    });
+});
+
+describe('Get /api/contacts/chat/:tableName', function() {
+    before(function(done) {
+        seed.seedChatDatabase(done, 'NewContact3');
+    });
+
+    it('should return all messages for that contact', function() {
+        return request(app)
+            .get('/api/contacts/chat/NewContact3')
+            .then(function(response) {
+                const messages = response.body.messages;
+                expect(messages.length).to.equal(2);
+                expect(messages.find(message => message.id === 1)).to.exist;
+                expect(messages.find(message => message.id === 2)).to.exist;
+                expect(messages.find(message => message.id === 3)).to.not.exist;
+            })
+    });
+});
+
+describe('DELETE /api/contacts/chat/:tableName/:messageId', function() {
+    beforeEach(function(done) {
+        seed.seedChatDatabase(done, 'NewContact3');
+    });
+    
+    it('should delete selected message', function(done) {
+        return request(app)
+            .delete('/api/contacts/chat/NewContact3/2')
+            .then(function(response) {
+                testDb.all('SELECT * FROM NewContact3', (error, messages) => {
+                    if (error) {
+                        done(new Error(error))
+                    }
+                    expect(messages.length).to.equal(1);
+                    expect(messages.find(message => message.id === 1)).to.exist;
+                    expect(messages.find(message => message.id === 2)).to.not.exist;
+                    done();
+                })   
+            }).catch(done);
+    });
+
+    it('should send a 204 response for successful deletion', function() {
+        return request(app)
+            .delete('/api/contacts/chat/NewContact3/2')
+            .expect(204);
     });
 });
