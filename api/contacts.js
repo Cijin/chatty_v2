@@ -9,9 +9,6 @@ const createContactTable = require('./migrations/createContact');
 const sqlite3 = require('sqlite3');
 const db = new sqlite3.Database(process.env.TEST_DATABASE || './database.sqlite');
 
-
-contactsRouter.use('/chat', chatRouter);
-
 //returns all current contact
 //when page loads initially
 contactsRouter.get('/', (req, res, next) => {

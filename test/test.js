@@ -172,14 +172,14 @@ describe('POST api/contacts', function() {
     });
 });
 
-describe('Get /api/contacts/chat/:tableName', function() {
-    before(function(done) {
+describe('Get /api/chat/:tableName', function() {
+    beforeEach(function(done) {
         seed.seedChatDatabase(done, 'NewContact3');
     });
 
     it('should return all messages for that contact', function() {
         return request(app)
-            .get('/api/contacts/chat/NewContact3')
+            .get('/api/chat/NewContact3')
             .then(function(response) {
                 const messages = response.body.messages;
                 expect(messages.length).to.equal(2);
@@ -188,32 +188,90 @@ describe('Get /api/contacts/chat/:tableName', function() {
                 expect(messages.find(message => message.id === 3)).to.not.exist;
             })
     });
+
+    it('should send a 200(ok) response', function() {
+        return request(app)
+            .get('/api/chat/NewContact3')
+            .expect(200);
+    });
 });
 
-describe('DELETE /api/contacts/chat/:tableName/:messageId', function() {
+describe('Get /api/chat/:tableName?messageId', function() {
+    beforeEach(function(done) {
+        seed.seedChatDatabase(done, 'NewContact3');
+    });
+
+    it('should return a message of id in query', function() {
+        return request(app)
+            .get('/api/chat/NewContact3?messageId=2')
+            .then(function(response) {
+                const message = response.body.message;                
+                expect(message).to.exist;
+                expect(message.messages).to.equal("What is up?");
+            })
+    });
+
+    it('should send a 200 response', function() {
+        return request(app)
+            .get('/api/chat/NewContact3?messageId=2')
+            .expect(200);
+    });
+});
+
+describe('DELETE /api/chat/:tableName', function() {    
+    beforeEach(function(done) {
+        seed.seedChatDatabase(done, 'NewContact3');
+    });
+
+    it('should delete table', function(done) {
+        request(app)
+        .delete('/api/chat/NewContact3')
+        .then(function(response) {
+            testDb.all('SELECT * FROM NewContact3', (error, messages) => {
+                if (error && error.toString().includes('no such table: NewContact3')) {                                    
+                    done();    
+                }
+                else if (!error) {
+                    done(new Error('Table not deleted'));
+                }    
+                else {
+                    done(new Error(error));
+                }            
+            })   
+        }).catch(done);
+    });
+
+    it('should send a 204 response for successful table deletion', function() {
+        return request(app)
+            .delete('/api/chat/NewContact3')
+            .expect(204);
+    });
+});
+
+describe('DELETE /api/chat/:tableName?messageId', function() {
     beforeEach(function(done) {
         seed.seedChatDatabase(done, 'NewContact3');
     });
     
     it('should delete selected message', function(done) {
-        return request(app)
-            .delete('/api/contacts/chat/NewContact3/2')
-            .then(function(response) {
-                testDb.all('SELECT * FROM NewContact3', (error, messages) => {
-                    if (error) {
-                        done(new Error(error))
-                    }
-                    expect(messages.length).to.equal(1);
-                    expect(messages.find(message => message.id === 1)).to.exist;
-                    expect(messages.find(message => message.id === 2)).to.not.exist;
-                    done();
-                })   
-            }).catch(done);
+        request(app)
+        .delete('/api/chat/NewContact3?messageId=2')
+        .then(function(response) {
+            testDb.all('SELECT * FROM NewContact3', (error, messages) => {
+                if (error) {
+                    done(new Error(error))
+                }
+                expect(messages.length).to.equal(1);
+                expect(messages.find(message => message.id === 1)).to.exist;
+                expect(messages.find(message => message.id === 2)).to.not.exist;
+                done();
+            })   
+        }).catch(done);
     });
 
     it('should send a 204 response for successful deletion', function() {
         return request(app)
-            .delete('/api/contacts/chat/NewContact3/2')
+            .delete('/api/chat/NewContact3?messageId=2')
             .expect(204);
     });
 });
