@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack --config webpack.config.js",
-    "test" : "mocha"
+    "test": "mocha"
   },
   "dependencies": {
     "@types/react": "^16.9.34",
