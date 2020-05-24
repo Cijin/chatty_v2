@@ -1,13 +1,19 @@
 .contact {
     width: auto;
-    height: 100px;
-    background-color: #212121;
+    height: 100px;    
     padding-top: 10px;
+    border-top: 1px solid gray;
+    cursor: pointer;
 }
 
 .contact p {
     padding: 10px 10px;
     margin-left: 10px;    
+}
+
+#active {
+    background-color: #212121;
+    border-left: 4px solid #14ffec;
 }
 
 .status {
