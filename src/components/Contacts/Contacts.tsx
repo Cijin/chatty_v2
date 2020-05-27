@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ContactsHelper } from '../../utils/contactsHelper';
 import Contact from './Contact/Contact';
 
 import './contacts.css';
@@ -66,7 +67,8 @@ export default function Contacts () {
 
     React.useEffect(() => {
        appendContacts(); 
-    }, [])
+       console.log(ContactsHelper.getContacts());
+    }, [contacts, setContacts])
         
     return (
         <div className="contacts">
