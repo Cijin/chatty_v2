@@ -66,8 +66,7 @@ export default function Contacts () {
     }
 
     React.useEffect(() => {
-       appendContacts(); 
-       console.log(ContactsHelper.getContacts());
+       appendContacts();        
     }, [contacts, setContacts])
         
     return (
