@@ -46,7 +46,7 @@ contactsRouter.post('/', (req, res, next) => {
         const rowId = this.lastID;
         //to create new table name
         //regX just replaces spaces between name
-        const tableName = name.replace(/\s+/g, '') + rowId;
+        const tableName = name.replace(/[^A-Z0-9]/ig, "_") + rowId;
         const newTableSql = 'UPDATE contacts SET contact_table_id=$tableName ' +
             'WHERE id=$id;';
         const newValues = {
@@ -55,7 +55,7 @@ contactsRouter.post('/', (req, res, next) => {
         };
         //calling the function in migrations to create a table for the new contact
         //the table name is the the contact_table_id
-        createContactTable(tableName, next);        
+        createContactTable(tableName);        
 
         db.run(newTableSql, newValues, function(error) {
             if (error) {
