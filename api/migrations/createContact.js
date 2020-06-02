@@ -6,9 +6,7 @@ function createContactTable (tableName) {
         `('id' INTEGER NOT NULL, 'messages' TEXT NOT NULL, 'time' TEXT NOT NULL, ` + 
         `PRIMARY KEY('id'));`;
 
-    db.run(sql, error => {
-        console.log(error);
-    });
+    db.run(sql);
 }
 
 module.exports = createContactTable;
