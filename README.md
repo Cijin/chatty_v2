@@ -1,6 +1,6 @@
 # chatty_v2
  
- About:
+ ##About:
 
 Chatty is a chat application project started by me. The idea behind the project is to practice my full stack capabilities. it also helps me find out the kinks in my knowledge.
 
@@ -10,7 +10,7 @@ You might have asked, where's version one. Version one denotes my failure, I alm
 
 I decided to restart the project from scratch, as it gave me a breath of fresh air. Since then the project has far surpassed version one, although it's still in it's infancy.
 
-Tech Stack: 
+##Tech Stack: 
     
 Front-End: React, Typescript, Css
 Back-End: NodeJs, Express, SqLite
@@ -18,9 +18,9 @@ Bundler: Webpack
 Packages: npm
 Version-Control: Git
 
-Documentation: 
+##Documentation: 
 
-Installation: 
+###Installation: 
     1. Run npm install to install dependencies
     2. npm start creates the dist folder and webpack bundle 
     3. Run node api/migrations/migration.js (creates neccessary tables)
@@ -28,7 +28,7 @@ Installation:
     3. Run node server.js to start server on localhost:4000
     4. Open http://localhost:4000 to view application
 
-File Structure:
+##File Structure:
 
 api: 
     1. Contains api Routes
@@ -60,15 +60,15 @@ src:
     3. Util : contains helper functions to fetch (get & post) data from and to the database
     4. index.tsx: index file that renders the app
 
-test: contains seed data for test database and test files
+###test: contains seed data for test database and test files
 
-database.sqlite: sqlite database that holds all data
+###database.sqlite: sqlite database that holds all data
 
-index.html: the html files that is run when server starts
+###index.html: the html files that is run when server starts
 
-webpack.config.js: webpack config file
+###webpack.config.js: webpack config file
 
-Testing:
+##Testing:
 
 1. Run node test/seed.js (this will seed the test database)
 2. Run npm test (this will run the mocha test suite in the console)
