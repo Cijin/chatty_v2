@@ -27,15 +27,21 @@ contactsRouter.get('/', (req, res, next) => {
 contactsRouter.post('/', (req, res, next) => {
     const name = req.body.contact.name;
     const email = req.body.contact.email;
+    const status = req.body.contact.status;
+    //whenever a new contact is created, that becomes the active contact
+    //haven't added this functionality to the frontend yet
+    const isActive = true;   
 
-    if (!name || !email) {
+    if (!name || !email || !status) {
         return res.sendStatus(400);
     }
-    const sql = 'INSERT INTO contacts (contact_name, contact_email)' +
-        'VALUES ($name, $email);';
+    const sql = 'INSERT INTO contacts (contact_name, contact_email, contactStatus, is_Active)' +
+        'VALUES ($name, $email, $contactStatus, $isActive);';
     const values = {
         $name: name,
         $email: email,
+        $contactStatus: status,
+        $isActive: isActive,
     };
 
     db.run(sql, values, function(error) {
